@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Token {
@@ -67,8 +66,7 @@ public class Token {
 
     // A partir d'un String, torna una llista de tokens
     public static Token[] getTokens(String expr) {
-        // Inicializamos la String expr vacía, y creamos una Lista
-        expr = "";
+        // creamos una Lista
         List<Token> t = new ArrayList<>();
         for (int i = 0; i < expr.length(); i++) {
             // Si hay un espacio, continua
@@ -78,30 +76,29 @@ public class Token {
             // Si el carácter no es un operador, es decir un número, creamos una StringBuilder
             if (!comprobar(expr.charAt(i))){
                 StringBuilder sb = new StringBuilder();
-                sb.charAt(expr.charAt(i));
-                // Recorremos la String en busca de los valores
-                for (int j = i+1; j < expr.length(); j++) {
+                // Buscamos los números y los añadimos dentro de la StringBuilder
+                for (int j = i; j < expr.length(); j++) {
                     if (comprobar(expr.charAt(j))){
                         break;
-                    } sb.append(j);
+                    }
+                    sb.append(j);
                     i = j;
                 }
                 t.add(Token.tokNumber(Integer.parseInt(sb.toString())));
             } else if (EsParentesis(expr.charAt(i))) {
                 t.add(Token.tokParen(expr.charAt(i)));
-                if (expr.charAt(i) == '+' || expr.charAt(i) == '-' || expr.charAt(i) == '*' || expr.charAt(i) == '/') {
-                    t.add(Token.tokOp(expr.charAt(i)));
-                }
+            } else if (expr.charAt(i) == '+' || expr.charAt(i) == '-' || expr.charAt(i) == '*' || expr.charAt(i) == '/') {
+                t.add(Token.tokOp(expr.charAt(i)));
             }
         }
-        return t.toArray(Token.getTokens(expr));
+        return t.toArray(new Token[t.size()]);
     }
 
-    static boolean EsParentesis(char c){
+    private static boolean EsParentesis(char c){
         return (c == '(' || c == ')');
     }
 
-    static boolean comprobar(char c){
+    private static boolean comprobar(char c){
         return (c == ' ' || c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')');
     }
 }
